@@ -79,3 +79,116 @@
 html {
     scroll-behavior: smooth;
 }
+
+/* ===== GLightbox Custom Styles ===== */
+.glightbox-container .gslide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 40px;
+}
+
+.glightbox-container .gslide-media {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.glightbox-container .gslide-image img {
+    max-width: 85vw !important;
+    max-height: 70vh !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+.glightbox-container .gslide-description {
+    background: rgba(15, 10, 30, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 16px 20px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    max-width: 85vw;
+    margin: 0 auto;
+}
+
+.glightbox-container .gslide-title {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.glightbox-container .gdesc-inner {
+    padding: 0 !important;
+}
+
+.glightbox-container .gslide-desc {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    margin-top: 4px !important;
+}
+
+.glightbox-container .gnext,
+.glightbox-container .gprev {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: all 0.3s;
+}
+
+.glightbox-container .gnext:hover,
+.glightbox-container .gprev:hover {
+    background: rgba(217, 119, 6, 0.9);
+    border-color: transparent;
+    transform: scale(1.1);
+}
+
+.glightbox-container .gclose {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    top: 20px;
+    right: 20px;
+    transition: all 0.3s;
+}
+
+.glightbox-container .gclose:hover {
+    background: rgba(239, 68, 68, 0.9);
+    border-color: transparent;
+    transform: scale(1.1);
+}
+
+.glightbox-container .goverlay {
+    background: rgba(15, 10, 30, 0.93) !important;
+}
+
+
+/* ===== Prevent image save ===== */
+.glightbox img,
+[data-gallery] img {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    pointer-events: none;
+}
+
+[data-gallery] a {
+    pointer-events: auto;
+}

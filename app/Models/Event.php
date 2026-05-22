@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Event extends Model implements HasMedia
+class Event extends Model
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
 
     protected $fillable = [
         'title_en',
@@ -20,6 +18,9 @@ class Event extends Model implements HasMedia
         'starts_at',
         'ends_at',
         'is_published',
+        'featured_image',
+        'button_text',
+        'button_url',
     ];
 
     protected function casts(): array
@@ -29,10 +30,5 @@ class Event extends Model implements HasMedia
             'ends_at' => 'datetime',
             'is_published' => 'boolean',
         ];
-    }
-
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('banner')->singleFile();
     }
 }

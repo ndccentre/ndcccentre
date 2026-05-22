@@ -15,17 +15,24 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Roles
-        Role::create(['name' => 'super_admin']);
-        Role::create(['name' => 'pastor']);
-        Role::create(['name' => 'editor']);
+        Role::firstOrCreate(['name' => 'super_admin']);
+        Role::firstOrCreate(['name' => 'admin']);
+        Role::firstOrCreate(['name' => 'pastor']);
+        Role::firstOrCreate(['name' => 'editor']);
+
+        // Super Admin user
+        $superAdmin = User::firstOrCreate(
+            ['email' => 'admin@ndpccenter.co.tz'],
+            ['name' => 'Super Admin', 'password' => Hash::make('Ndpcc@2026')]
+        );
+        $superAdmin->assignRole('super_admin');
 
         // Admin user
-        $admin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@ndpcc.org',
-            'password' => Hash::make('password'),
-        ]);
-        $admin->assignRole('super_admin');
+        $admin = User::firstOrCreate(
+            ['email' => 'info@ndpccenter.co.tz'],
+            ['name' => 'Admin', 'password' => Hash::make('Ndpcc@2026')]
+        );
+        $admin->assignRole('admin');
 
         // Site Settings
         $settings = [

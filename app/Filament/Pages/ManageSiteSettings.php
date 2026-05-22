@@ -6,9 +6,10 @@ use App\Models\SiteSetting;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class ManageSiteSettings extends Page implements HasForms
 {
@@ -23,12 +24,16 @@ class ManageSiteSettings extends Page implements HasForms
 
     public function mount(): void
     {
+        $heroImage = SiteSetting::get('hero_image');
+        $aboutImage = SiteSetting::get('about_image');
+
         $this->form->fill([
             'contact_address' => SiteSetting::get('contact_address'),
             'contact_phone' => SiteSetting::get('contact_phone'),
             'contact_whatsapp' => SiteSetting::get('contact_whatsapp'),
             'contact_email' => SiteSetting::get('contact_email'),
             'service_times' => SiteSetting::get('service_times'),
+            'map_embed_url' => SiteSetting::get('map_embed_url'),
             'mpesa_number' => SiteSetting::get('mpesa_number'),
             'bank_name' => SiteSetting::get('bank_name'),
             'account_name' => SiteSetting::get('account_name'),
@@ -43,14 +48,17 @@ class ManageSiteSettings extends Page implements HasForms
             'social_instagram' => SiteSetting::get('social_instagram'),
             'social_instagram_church' => SiteSetting::get('social_instagram_church'),
             'social_tiktok' => SiteSetting::get('social_tiktok'),
+            'hero_image' => $heroImage ? [$heroImage] : [],
+            'hero_video_url' => SiteSetting::get('hero_video_url'),
+            'about_image' => $aboutImage ? [$aboutImage] : [],
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
-            Forms\Components\Section::make('Page Images')
-                ->description('Upload images for the homepage hero section and about page.')
+        return $schema->components([
+            Section::make('Page Images')
+                ->description('Upload images and video for the homepage hero section and about page.')
                 ->schema([
                     Forms\Components\FileUpload::make('hero_image')
                         ->label('Homepage Hero Image')
@@ -59,6 +67,10 @@ class ManageSiteSettings extends Page implements HasForms
                         ->directory('site-images')
                         ->visibility('public')
                         ->helperText('Large background image for the homepage hero section'),
+                    Forms\Components\TextInput::make('hero_video_url')
+                        ->label('Homepage Hero Video (YouTube URL)')
+                        ->placeholder('https://www.youtube.com/watch?v=...')
+                        ->helperText('Optional: YouTube video to display on the hero section'),
                     Forms\Components\FileUpload::make('about_image')
                         ->label('About Page Image')
                         ->image()
@@ -68,15 +80,19 @@ class ManageSiteSettings extends Page implements HasForms
                         ->helperText('Image for the About Us page'),
                 ])->columns(2),
 
-            Forms\Components\Section::make('Contact Information')->schema([
+            Section::make('Contact Information')->schema([
                 Forms\Components\TextInput::make('contact_address')->label('Address'),
                 Forms\Components\TextInput::make('contact_phone')->label('Phone'),
                 Forms\Components\TextInput::make('contact_whatsapp')->label('WhatsApp Number'),
                 Forms\Components\TextInput::make('contact_email')->label('Email'),
                 Forms\Components\Textarea::make('service_times')->label('Service Times')->rows(3),
+                Forms\Components\TextInput::make('map_embed_url')
+                    ->label('Google Maps Embed URL')
+                    ->placeholder('https://www.google.com/maps/embed?pb=...')
+                    ->helperText('Go to Google Maps → Share → Embed → copy the src URL from the iframe'),
             ])->columns(2),
 
-            Forms\Components\Section::make('Giving / Donations')->schema([
+            Section::make('Giving / Donations')->schema([
                 Forms\Components\TextInput::make('mpesa_number')->label('M-Pesa Number'),
                 Forms\Components\TextInput::make('bank_name')->label('Bank Name'),
                 Forms\Components\TextInput::make('account_name')->label('Account Name'),
@@ -85,13 +101,13 @@ class ManageSiteSettings extends Page implements HasForms
                 Forms\Components\Select::make('show_bank')->options(['true' => 'Yes', 'false' => 'No'])->label('Show Bank Section'),
             ])->columns(2),
 
-            Forms\Components\Section::make('Radio Configuration')->schema([
+            Section::make('Radio Configuration')->schema([
                 Forms\Components\TextInput::make('radio_stream_url')->label('Stream URL'),
                 Forms\Components\Select::make('radio_is_live')->options(['true' => 'Live', 'false' => 'Off Air'])->label('Radio Status'),
                 Forms\Components\TextInput::make('radio_current_program')->label('Current Program'),
             ])->columns(2),
 
-            Forms\Components\Section::make('Social Media')->schema([
+            Section::make('Social Media')->schema([
                 Forms\Components\TextInput::make('social_youtube')->label('YouTube URL'),
                 Forms\Components\TextInput::make('social_facebook')->label('Facebook URL'),
                 Forms\Components\TextInput::make('social_instagram')->label('Instagram (Apostle)'),
@@ -107,7 +123,6 @@ class ManageSiteSettings extends Page implements HasForms
 
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                // FileUpload returns array, store the first file path
                 $value = !empty($value) ? reset($value) : '';
             }
             SiteSetting::set($key, $value ?? '');

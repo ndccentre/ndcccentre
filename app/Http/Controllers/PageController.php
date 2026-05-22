@@ -20,8 +20,13 @@ class PageController extends Controller
             ->orderBy('starts_at')
             ->take(3)
             ->get();
+        $latestSermons = Sermon::where('is_published', true)
+            ->where('video_source', 'youtube')
+            ->orderByDesc('preached_at')
+            ->take(3)
+            ->get();
 
-        return view('pages.home', compact('scripture', 'upcomingEvents'));
+        return view('pages.home', compact('scripture', 'upcomingEvents', 'latestSermons'));
     }
 
     public function about()
@@ -141,5 +146,33 @@ class PageController extends Controller
         $serviceTimes = SiteSetting::get('service_times');
 
         return view('pages.contact', compact('address', 'phone', 'whatsapp', 'email', 'serviceTimes'));
+    }
+
+    public function blog(Request $request)
+    {
+        $posts = \App\Models\BlogPost::published()
+            ->when($request->category, fn ($q, $c) => $q->where('category', $c))
+            ->orderByDesc('published_at')
+            ->paginate(9);
+
+        return view('pages.blog', compact('posts'));
+    }
+
+    public function blogPost(string $locale, string $slug)
+    {
+        $post = \App\Models\BlogPost::where('slug', $slug)->published()->firstOrFail();
+        $post->increment('views');
+        $comments = $post->approvedComments()->latest()->get();
+        $related = \App\Models\BlogPost::published()->where('category', $post->category)->where('id', '!=', $post->id)->take(3)->get();
+
+        return view('pages.blog-show', compact('post', 'comments', 'related'));
+    }
+
+    public function blogComment(Request $request, string $locale, string $slug)
+    {
+        $post = \App\Models\BlogPost::where('slug', $slug)->firstOrFail();
+        $request->validate(['name' => 'required|max:255', 'email' => 'nullable|email', 'body' => 'required|max:2000']);
+        $post->comments()->create(['name' => $request->name, 'email' => $request->email, 'body' => $request->body, 'is_approved' => false]);
+        return back()->with('comment_submitted', true);
     }
 }

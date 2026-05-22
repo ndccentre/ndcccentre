@@ -6,9 +6,10 @@ use App\Models\ScriptureOfWeek;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class ManageScripture extends Page implements HasForms
 {
@@ -32,10 +33,10 @@ class ManageScripture extends Page implements HasForms
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
-            Forms\Components\Section::make('Scripture of the Week')->schema([
+        return $schema->components([
+            Section::make('Scripture of the Week')->schema([
                 Forms\Components\Textarea::make('verse_en')->required()->label('Verse (English)')->rows(3),
                 Forms\Components\Textarea::make('verse_sw')->required()->label('Verse (Swahili)')->rows(3),
                 Forms\Components\TextInput::make('reference')->required()->placeholder('e.g. Romans 1:16'),
@@ -56,6 +57,15 @@ class ManageScripture extends Page implements HasForms
             'is_active' => true,
         ]);
 
-        Notification::make()->title('Scripture of the Week updated.')->success()->send();
+        // Notify subscribers
+        \App\Services\NotifySubscribers::send(
+            'Scripture of the Week — ' . $data['reference'],
+            'Scripture of the Week',
+            $data['verse_en'] . "\n\n— " . $data['reference'],
+            'Visit Website',
+            url('/en')
+        );
+
+        Notification::make()->title('Scripture of the Week updated & subscribers notified.')->success()->send();
     }
 }

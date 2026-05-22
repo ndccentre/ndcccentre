@@ -3,6 +3,29 @@
 @endphp
 
 <footer class="bg-dark text-white">
+    {{-- Newsletter Subscribe Section --}}
+    <div class="border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white">{{ app()->getLocale() === 'sw' ? 'Jiandikishe Kupata Habari' : 'Subscribe for Updates' }}</h3>
+                    <p class="text-white/60 text-sm mt-1">{{ app()->getLocale() === 'sw' ? 'Pokea andiko la wiki, matukio, na mahubiri mapya.' : 'Get weekly scripture, events, and new sermons in your inbox.' }}</p>
+                </div>
+                <form action="{{ route('subscribe') }}" method="POST" class="flex gap-2 w-full md:w-auto">
+                    @csrf
+                    <input type="email" name="email" required placeholder="{{ app()->getLocale() === 'sw' ? 'Barua pepe yako' : 'Your email address' }}"
+                           class="px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-gold focus:border-transparent w-full md:w-72">
+                    <button type="submit" class="px-6 py-3 bg-gold text-white font-bold rounded-xl hover:bg-gold-light transition whitespace-nowrap">
+                        {{ app()->getLocale() === 'sw' ? 'Jiandikishe' : 'Subscribe' }}
+                    </button>
+                </form>
+            </div>
+            @if(session('subscribed'))
+            <p class="mt-4 text-green-400 text-sm font-medium">✓ {{ app()->getLocale() === 'sw' ? 'Umejisajili! Utapokea habari mpya.' : 'Subscribed! You will receive updates.' }}</p>
+            @endif
+        </div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
 
@@ -82,17 +105,18 @@
             <div>
                 <h4 class="text-gold font-semibold mb-4">{{ __('site.nav.give') }}</h4>
                 <ul class="space-y-2 text-sm text-white/70">
-                    <li><span class="text-white/50">Airtel Money:</span> +255 784 363 502 </li>
-                    <li><span class="text-white/50">Lipa Namba (Vodacom):</span> 58268290</li>
-                    <li><span class="text-white/50">NMB Bank</span>40810146696</li>
+                    <li><span class="text-white/50">Airtel Money:</span> +255 784 363 502</li>
+                    <li><span class="text-white/50">Lipa Namba:</span> 58268290</li>
+                    <li><span class="text-white/50">NMB Bank:</span> 40810146696</li>
                 </ul>
             </div>
 
         </div>
 
         {{-- Copyright --}}
-        <div class="mt-12 pt-8 border-t border-white/10 text-center text-sm text-white/50">
-            &copy; {{ date('Y') }} Nayoth Divine Power Christian Centre. {{ __('site.footer.rights') }}
+        <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-white/50">
+            <span>&copy; 2007 — {{ date('Y') }} Nayoth Divine Power Christian Centre. {{ __('site.footer.rights') }}</span>
+            <span>Designed by <a href="https://twncolors.com" target="_blank" rel="noopener" class="text-gold hover:text-gold-light transition">Twn Colors</a></span>
         </div>
     </div>
 </footer>

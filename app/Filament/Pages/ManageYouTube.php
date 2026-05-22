@@ -8,9 +8,10 @@ use App\Services\YouTubeService;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Artisan;
 
 class ManageYouTube extends Page implements HasForms
@@ -33,10 +34,10 @@ class ManageYouTube extends Page implements HasForms
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
-            Forms\Components\Section::make('API Key Setup')
+        return $schema->components([
+            Section::make('API Key Setup')
                 ->description('Optional but recommended. Enables Shorts detection, view counts, and live stream auto-detection.')
                 ->schema([
                     Forms\Components\TextInput::make('youtube_api_key')
@@ -46,7 +47,7 @@ class ManageYouTube extends Page implements HasForms
                         ->helperText('Get your key from console.cloud.google.com → APIs & Services → Credentials'),
                 ]),
 
-            Forms\Components\Section::make('Live Stream Control')
+            Section::make('Live Stream Control')
                 ->schema([
                     Forms\Components\TextInput::make('youtube_live_video_id')
                         ->label('Live Video ID')
