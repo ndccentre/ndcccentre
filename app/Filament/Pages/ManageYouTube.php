@@ -20,7 +20,7 @@ class ManageYouTube extends Page implements HasForms
     protected static ?string $title = 'YouTube Management';
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-play';
     protected static string|\UnitEnum|null $navigationGroup = 'Content';
-    protected static string $view = 'filament.pages.manage-youtube';
+    protected string $view = 'filament.pages.manage-youtube';
 
     public ?array $data = [];
 

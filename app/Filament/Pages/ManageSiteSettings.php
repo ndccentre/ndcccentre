@@ -17,7 +17,7 @@ class ManageSiteSettings extends Page implements HasForms
     protected static ?string $title = 'Site Settings';
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
     protected static string|\UnitEnum|null $navigationGroup = 'Settings';
-    protected static string $view = 'filament.pages.manage-site-settings';
+    protected string $view = 'filament.pages.manage-site-settings';
 
     public ?array $data = [];
 
