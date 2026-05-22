@@ -71,6 +71,8 @@ return [
         'filter_series' => 'Mfululizo',
         'filter_date' => 'Tarehe',
         'no_results' => 'Hakuna mahubiri yaliyopatikana.',
+        'no_shorts' => 'Hakuna Shorts kwa sasa.',
+        'no_live' => 'Hakuna rekodi za moja kwa moja. Wakati channel itakapokuwa live, itaonekana hapa.',
         'tab_sermons' => 'Mahubiri',
         'tab_shorts' => 'Shorts',
         'tab_live' => 'Moja kwa Moja',

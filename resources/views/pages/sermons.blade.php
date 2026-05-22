@@ -131,7 +131,7 @@
             @endforeach
         </div>
         @else
-        <p class="text-center text-gray-500 text-lg py-12">{{ __('site.sermons.no_results') }}</p>
+        <p class="text-center text-gray-500 text-lg py-12">{{ __('site.sermons.no_shorts') }}</p>
         @endif
     </div>
 </section>
@@ -194,7 +194,7 @@
             @endforeach
         </div>
         @elseif(!$isLive)
-        <p class="text-center text-gray-500 text-lg py-12">{{ __('site.sermons.no_results') }}</p>
+        <p class="text-center text-gray-500 text-lg py-12">{{ __('site.sermons.no_live') }}</p>
         @endif
     </div>
 </section>

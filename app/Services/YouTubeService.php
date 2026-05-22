@@ -57,6 +57,8 @@ class YouTubeService
                 }
 
                 $videos = [];
+                $videoIds = [];
+
                 foreach ($xml->entry as $entry) {
                     $ns = $entry->children('yt', true);
                     $media = $entry->children('media', true);
@@ -67,6 +69,7 @@ class YouTubeService
                         $description = (string) $media->group->description;
                     }
 
+                    $videoIds[] = $videoId;
                     $videos[] = [
                         'video_id'     => $videoId,
                         'title'        => (string) $entry->title,
@@ -76,18 +79,53 @@ class YouTubeService
                         'duration'     => 0,
                         'duration_str' => '',
                         'view_count'   => 0,
-                        'type'         => $this->detectTypeFromTitle((string) $entry->title, $description),
+                        'type'         => 'sermon', // will be updated below
                         'embed_url'    => "https://www.youtube.com/embed/{$videoId}",
                         'watch_url'    => "https://www.youtube.com/watch?v={$videoId}",
                         'is_live_now'  => false,
                         'source'       => 'rss',
                     ];
                 }
+
+                // Detect Shorts by checking YouTube Shorts URL (HEAD request)
+                $shortsMap = $this->detectShorts($videoIds);
+
+                foreach ($videos as &$video) {
+                    if (isset($shortsMap[$video['video_id']]) && $shortsMap[$video['video_id']]) {
+                        $video['type'] = 'short';
+                        $video['watch_url'] = "https://www.youtube.com/shorts/{$video['video_id']}";
+                    } else {
+                        $video['type'] = $this->detectTypeFromTitle($video['title'], $video['description']);
+                    }
+                }
+                unset($video);
+
                 return $videos;
             } catch (\Exception $e) {
                 return [];
             }
         });
+    }
+
+    /**
+     * Detect which videos are Shorts by checking the /shorts/ URL.
+     * YouTube redirects /shorts/ID to /watch?v=ID if it's NOT a Short.
+     */
+    private function detectShorts(array $videoIds): array
+    {
+        $results = [];
+        foreach ($videoIds as $videoId) {
+            try {
+                $response = Http::timeout(5)
+                    ->withOptions(['allow_redirects' => false])
+                    ->head("https://www.youtube.com/shorts/{$videoId}");
+                // 200 = it's a Short, 303/302 = it's a regular video
+                $results[$videoId] = $response->status() === 200;
+            } catch (\Exception $e) {
+                $results[$videoId] = false;
+            }
+        }
+        return $results;
     }
 
     /**

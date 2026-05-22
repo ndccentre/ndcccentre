@@ -71,6 +71,8 @@ return [
         'filter_series' => 'Series',
         'filter_date' => 'Date',
         'no_results' => 'No sermons found.',
+        'no_shorts' => 'No Shorts available yet.',
+        'no_live' => 'No live recordings available. When the channel goes live, it will appear here.',
         'tab_sermons' => 'Sermons',
         'tab_shorts' => 'Shorts',
         'tab_live' => 'Live',
