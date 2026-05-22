@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
             ->brandName('NDPCC Admin')
             ->brandLogo(asset('images/ndpcc-logo.png'))
             ->brandLogoHeight('2.5rem')
