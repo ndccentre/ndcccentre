@@ -44,7 +44,7 @@
 <section class="py-20 bg-gradient-to-r from-primary-dark to-primary text-white text-center" data-aos="fade-up">
     <div class="max-w-4xl mx-auto px-4">
         <h2 class="text-3xl md:text-4xl font-bold mb-6">{{ __('site.foundation.cta') }}</h2>
-        <a href="{{ route('give', request()->route('locale') ?? 'sw') }}" class="inline-block px-8 py-4 bg-gold text-white font-semibold rounded-lg hover:bg-gold-light transition shadow-lg text-lg">
+        <a href="{{ route('give', request()->route('locale') ?? 'en') }}" class="inline-block px-8 py-4 bg-gold text-white font-semibold rounded-lg hover:bg-gold-light transition shadow-lg text-lg">
             {{ __('site.nav.give') }}
         </a>
     </div>

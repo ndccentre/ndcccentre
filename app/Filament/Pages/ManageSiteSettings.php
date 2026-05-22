@@ -40,6 +40,11 @@ class ManageSiteSettings extends Page implements HasForms
             'radio_current_program' => SiteSetting::get('radio_current_program'),
             'hero_image' => SiteSetting::get('hero_image'),
             'about_image' => SiteSetting::get('about_image'),
+            'social_youtube' => SiteSetting::get('social_youtube'),
+            'social_facebook' => SiteSetting::get('social_facebook'),
+            'social_instagram' => SiteSetting::get('social_instagram'),
+            'social_instagram_church' => SiteSetting::get('social_instagram_church'),
+            'social_tiktok' => SiteSetting::get('social_tiktok'),
         ]);
     }
 
@@ -80,6 +85,14 @@ class ManageSiteSettings extends Page implements HasForms
                 Forms\Components\TextInput::make('radio_stream_url')->label('Stream URL'),
                 Forms\Components\Select::make('radio_is_live')->options(['true' => 'Live', 'false' => 'Off Air'])->label('Radio Status'),
                 Forms\Components\TextInput::make('radio_current_program')->label('Current Program'),
+            ])->columns(2),
+
+            Forms\Components\Section::make('Social Media')->schema([
+                Forms\Components\TextInput::make('social_youtube')->label('YouTube URL')->url(),
+                Forms\Components\TextInput::make('social_facebook')->label('Facebook URL')->url(),
+                Forms\Components\TextInput::make('social_instagram')->label('Instagram (Apostle)')->url(),
+                Forms\Components\TextInput::make('social_instagram_church')->label('Instagram (Church)')->url(),
+                Forms\Components\TextInput::make('social_tiktok')->label('TikTok URL')->url(),
             ])->columns(2),
         ])->statePath('data');
     }

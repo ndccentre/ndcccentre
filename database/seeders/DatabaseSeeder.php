@@ -30,19 +30,28 @@ class DatabaseSeeder extends Seeder
         // Site Settings
         $settings = [
             'contact_address' => 'Arusha, Tanzania',
-            'contact_phone' => '+255 XXX XXX XXX',
-            'contact_whatsapp' => '+255XXXXXXXXX',
+            'contact_phone' => '+255 784 363 502',
+            'contact_whatsapp' => '+255784363502',
             'contact_email' => 'info@ndpcc.org',
             'service_times' => "Sunday: 9:00 AM & 11:00 AM\nWednesday: 6:00 PM\nFriday: 5:30 PM",
-            'mpesa_number' => 'XXXXXXX',
-            'bank_name' => 'CRDB Bank',
+            'mpesa_number' => '+255 784 363 502',
+            'mpesa_name' => 'NDPCC',
+            'airtel_money' => '58268290',
+            'lipa_namba_vodacom' => '40810146696',
+            'bank_name' => 'NMB Bank',
             'account_name' => 'NDPCC',
-            'account_number' => 'XXXXXXXXXXXX',
+            'account_number' => '',
             'show_mpesa' => 'true',
             'show_bank' => 'true',
             'radio_stream_url' => '',
             'radio_is_live' => 'false',
             'radio_current_program' => '',
+            // Social Media
+            'social_youtube' => 'https://www.youtube.com/@ApostleMathayonnko',
+            'social_instagram' => 'https://www.instagram.com/apostlemathayonnko',
+            'social_instagram_church' => 'https://www.instagram.com/nayothministry',
+            'social_tiktok' => 'https://www.tiktok.com/@apostlemathayonnko',
+            'social_facebook' => 'https://www.facebook.com/NayothMinistry',
             // YouTube Integration
             'youtube_channel_id' => 'UC_nLmSKUvvSW4JyENg444gA',
             'youtube_channel_handle' => '@ApostleMathayonnko',
@@ -52,6 +61,9 @@ class DatabaseSeeder extends Seeder
             'youtube_live_video_id' => '',
             'youtube_is_live' => '0',
             'youtube_rss_url' => 'https://www.youtube.com/feeds/videos.xml?channel_id=UC_nLmSKUvvSW4JyENg444gA',
+            // Page Images
+            'hero_image' => '',
+            'about_image' => '',
         ];
 
         foreach ($settings as $key => $value) {

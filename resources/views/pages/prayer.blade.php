@@ -20,7 +20,7 @@
         </div>
         @endif
 
-        <form method="POST" action="{{ route('prayer.store', request()->route('locale') ?? 'sw') }}" class="space-y-6">
+        <form method="POST" action="{{ route('prayer.store', request()->route('locale') ?? 'en') }}" class="space-y-6">
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('site.prayer.form_name') }}</label>
