@@ -18,9 +18,9 @@ class ManageYouTube extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $title = 'YouTube Management';
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-play';
-    protected static string|\UnitEnum|null $navigationGroup = 'Content';
-    protected string $view = 'filament.pages.manage-youtube';
+    protected static ?string $navigationIcon = 'heroicon-o-play';
+    protected static ?string $navigationGroup = 'Content';
+    protected static string $view = 'filament.pages.manage-youtube';
 
     public ?array $data = [];
 
@@ -68,7 +68,6 @@ class ManageYouTube extends Page implements HasForms
         SiteSetting::set('youtube_live_video_id', $data['youtube_live_video_id'] ?? '');
         SiteSetting::set('youtube_is_live', $data['youtube_is_live'] ?? '0');
 
-        // Clear cache so new API key takes effect
         (new YouTubeService())->clearCache();
 
         Notification::make()->title('YouTube settings saved.')->success()->send();
@@ -91,7 +90,6 @@ class ManageYouTube extends Page implements HasForms
         Artisan::call('youtube:check-live');
         $output = Artisan::output();
 
-        // Refresh form data
         $this->form->fill([
             'youtube_api_key' => SiteSetting::get('youtube_api_key'),
             'youtube_live_video_id' => SiteSetting::get('youtube_live_video_id'),

@@ -15,9 +15,9 @@ class ManageSiteSettings extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $title = 'Site Settings';
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
-    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
-    protected string $view = 'filament.pages.manage-site-settings';
+    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static ?string $navigationGroup = 'Settings';
+    protected static string $view = 'filament.pages.manage-site-settings';
 
     public ?array $data = [];
 
@@ -38,8 +38,6 @@ class ManageSiteSettings extends Page implements HasForms
             'radio_stream_url' => SiteSetting::get('radio_stream_url'),
             'radio_is_live' => SiteSetting::get('radio_is_live', 'false'),
             'radio_current_program' => SiteSetting::get('radio_current_program'),
-            'hero_image' => SiteSetting::get('hero_image'),
-            'about_image' => SiteSetting::get('about_image'),
             'social_youtube' => SiteSetting::get('social_youtube'),
             'social_facebook' => SiteSetting::get('social_facebook'),
             'social_instagram' => SiteSetting::get('social_instagram'),
@@ -51,29 +49,35 @@ class ManageSiteSettings extends Page implements HasForms
     public function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Section::make('Page Images')->schema([
-                Forms\Components\FileUpload::make('hero_image')
-                    ->label('Homepage Hero Image')
-                    ->image()
-                    ->directory('site-images')
-                    ->helperText('Large background image for the homepage hero section'),
-                Forms\Components\FileUpload::make('about_image')
-                    ->label('About Page Image')
-                    ->image()
-                    ->directory('site-images')
-                    ->helperText('Image for the About Us page'),
-            ])->columns(2),
+            Forms\Components\Section::make('Page Images')
+                ->description('Upload images for the homepage hero section and about page.')
+                ->schema([
+                    Forms\Components\FileUpload::make('hero_image')
+                        ->label('Homepage Hero Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('site-images')
+                        ->visibility('public')
+                        ->helperText('Large background image for the homepage hero section'),
+                    Forms\Components\FileUpload::make('about_image')
+                        ->label('About Page Image')
+                        ->image()
+                        ->disk('public')
+                        ->directory('site-images')
+                        ->visibility('public')
+                        ->helperText('Image for the About Us page'),
+                ])->columns(2),
 
             Forms\Components\Section::make('Contact Information')->schema([
                 Forms\Components\TextInput::make('contact_address')->label('Address'),
                 Forms\Components\TextInput::make('contact_phone')->label('Phone'),
                 Forms\Components\TextInput::make('contact_whatsapp')->label('WhatsApp Number'),
-                Forms\Components\TextInput::make('contact_email')->email()->label('Email'),
+                Forms\Components\TextInput::make('contact_email')->label('Email'),
                 Forms\Components\Textarea::make('service_times')->label('Service Times')->rows(3),
             ])->columns(2),
 
-            Forms\Components\Section::make('Giving / M-Pesa')->schema([
-                Forms\Components\TextInput::make('mpesa_number')->label('M-Pesa Number (Paybill/Till)'),
+            Forms\Components\Section::make('Giving / Donations')->schema([
+                Forms\Components\TextInput::make('mpesa_number')->label('M-Pesa Number'),
                 Forms\Components\TextInput::make('bank_name')->label('Bank Name'),
                 Forms\Components\TextInput::make('account_name')->label('Account Name'),
                 Forms\Components\TextInput::make('account_number')->label('Account Number'),
@@ -88,11 +92,11 @@ class ManageSiteSettings extends Page implements HasForms
             ])->columns(2),
 
             Forms\Components\Section::make('Social Media')->schema([
-                Forms\Components\TextInput::make('social_youtube')->label('YouTube URL')->url(),
-                Forms\Components\TextInput::make('social_facebook')->label('Facebook URL')->url(),
-                Forms\Components\TextInput::make('social_instagram')->label('Instagram (Apostle)')->url(),
-                Forms\Components\TextInput::make('social_instagram_church')->label('Instagram (Church)')->url(),
-                Forms\Components\TextInput::make('social_tiktok')->label('TikTok URL')->url(),
+                Forms\Components\TextInput::make('social_youtube')->label('YouTube URL'),
+                Forms\Components\TextInput::make('social_facebook')->label('Facebook URL'),
+                Forms\Components\TextInput::make('social_instagram')->label('Instagram (Apostle)'),
+                Forms\Components\TextInput::make('social_instagram_church')->label('Instagram (Church)'),
+                Forms\Components\TextInput::make('social_tiktok')->label('TikTok URL'),
             ])->columns(2),
         ])->statePath('data');
     }
@@ -102,7 +106,11 @@ class ManageSiteSettings extends Page implements HasForms
         $data = $this->form->getState();
 
         foreach ($data as $key => $value) {
-            SiteSetting::set($key, $value);
+            if (is_array($value)) {
+                // FileUpload returns array, store the first file path
+                $value = !empty($value) ? reset($value) : '';
+            }
+            SiteSetting::set($key, $value ?? '');
         }
 
         Notification::make()->title('Settings saved successfully.')->success()->send();
