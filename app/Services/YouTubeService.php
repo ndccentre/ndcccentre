@@ -76,7 +76,7 @@ class YouTubeService
                         'duration'     => 0,
                         'duration_str' => '',
                         'view_count'   => 0,
-                        'type'         => 'sermon',
+                        'type'         => $this->detectTypeFromTitle((string) $entry->title, $description),
                         'embed_url'    => "https://www.youtube.com/embed/{$videoId}",
                         'watch_url'    => "https://www.youtube.com/watch?v={$videoId}",
                         'is_live_now'  => false,
@@ -207,6 +207,26 @@ class YouTubeService
     {
         preg_match('/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/', $duration, $m);
         return (int) ($m[1] ?? 0) * 3600 + (int) ($m[2] ?? 0) * 60 + (int) ($m[3] ?? 0);
+    }
+
+    /**
+     * Detect video type from title/description in RSS mode (no duration available).
+     */
+    private function detectTypeFromTitle(string $title, string $description): string
+    {
+        $text = strtolower($title . ' ' . $description);
+
+        // Detect Shorts
+        if (str_contains($text, '#shorts') || str_contains($text, '#short') || str_contains($text, 'shorts')) {
+            return 'short';
+        }
+
+        // Detect Live recordings
+        if (str_contains($text, 'live') || str_contains($text, 'ibada') || str_contains($text, 'sunday service') || str_contains($text, 'moja kwa moja')) {
+            return 'live';
+        }
+
+        return 'sermon';
     }
 
     private function formatDuration(int $seconds): string

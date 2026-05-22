@@ -4,6 +4,10 @@
 @section('content')
 {{-- Hero Section --}}
 <section class="relative min-h-screen flex items-center justify-center bg-dark overflow-hidden">
+    @php $heroImage = \App\Models\SiteSetting::get('hero_image'); @endphp
+    @if($heroImage)
+    <img src="{{ asset('storage/' . $heroImage) }}" alt="NDPCC" class="absolute inset-0 w-full h-full object-cover">
+    @endif
     <div class="absolute inset-0 bg-gradient-to-br from-primary-dark/90 via-dark/80 to-dark"></div>
     <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <span class="inline-block px-4 py-2 bg-gold/20 text-gold text-sm font-semibold rounded-full mb-6 animate-fade-in">
@@ -16,10 +20,10 @@
             {{ __('site.home.hero_text') }}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-delay-3">
-            <a href="{{ route('contact', $locale ?? 'sw') }}" class="px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition shadow-lg">
+            <a href="{{ route('contact', $locale ?? 'en') }}" class="px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition shadow-lg">
                 {{ __('site.home.btn_join') }}
             </a>
-            <a href="{{ route('sermons', $locale ?? 'sw') }}" class="px-8 py-4 border-2 border-gold text-gold font-semibold rounded-lg hover:bg-gold hover:text-white transition">
+            <a href="{{ route('sermons', $locale ?? 'en') }}" class="px-8 py-4 border-2 border-gold text-gold font-semibold rounded-lg hover:bg-gold hover:text-white transition">
                 {{ __('site.home.btn_sermons') }}
             </a>
         </div>

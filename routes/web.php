@@ -5,7 +5,7 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to default locale
-Route::redirect('/', '/sw');
+Route::redirect('/', '/en');
 
 // Language switch
 Route::get('/lang/{locale}', function (string $locale) {

@@ -38,12 +38,27 @@ class ManageSiteSettings extends Page implements HasForms
             'radio_stream_url' => SiteSetting::get('radio_stream_url'),
             'radio_is_live' => SiteSetting::get('radio_is_live', 'false'),
             'radio_current_program' => SiteSetting::get('radio_current_program'),
+            'hero_image' => SiteSetting::get('hero_image'),
+            'about_image' => SiteSetting::get('about_image'),
         ]);
     }
 
     public function form(Form $form): Form
     {
         return $form->schema([
+            Forms\Components\Section::make('Page Images')->schema([
+                Forms\Components\FileUpload::make('hero_image')
+                    ->label('Homepage Hero Image')
+                    ->image()
+                    ->directory('site-images')
+                    ->helperText('Large background image for the homepage hero section'),
+                Forms\Components\FileUpload::make('about_image')
+                    ->label('About Page Image')
+                    ->image()
+                    ->directory('site-images')
+                    ->helperText('Image for the About Us page'),
+            ])->columns(2),
+
             Forms\Components\Section::make('Contact Information')->schema([
                 Forms\Components\TextInput::make('contact_address')->label('Address'),
                 Forms\Components\TextInput::make('contact_phone')->label('Phone'),

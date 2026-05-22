@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
         // Site Settings
         $settings = [
-            'contact_address' => 'Dar es Salaam, Tanzania',
+            'contact_address' => 'Arusha, Tanzania',
             'contact_phone' => '+255 XXX XXX XXX',
             'contact_whatsapp' => '+255XXXXXXXXX',
             'contact_email' => 'info@ndpcc.org',
