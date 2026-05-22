@@ -82,10 +82,9 @@
             <div>
                 <h4 class="text-gold font-semibold mb-4">{{ __('site.nav.give') }}</h4>
                 <ul class="space-y-2 text-sm text-white/70">
-                    <li><span class="text-white/50">M-Pesa:</span> +255 784 363 502</li>
-                    <li><span class="text-white/50">Airtel Money:</span> 58268290</li>
-                    <li><span class="text-white/50">Lipa Namba (Vodacom):</span> 40810146696</li>
-                    <li><span class="text-white/50">NMB Bank</span></li>
+                    <li><span class="text-white/50">Airtel Money:</span> +255 784 363 502 </li>
+                    <li><span class="text-white/50">Lipa Namba (Vodacom):</span> 58268290</li>
+                    <li><span class="text-white/50">NMB Bank</span>40810146696</li>
                 </ul>
             </div>
 
