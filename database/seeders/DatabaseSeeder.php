@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'contact_address' => 'Arusha, Tanzania',
             'contact_phone' => '+255 784 363 502',
             'contact_whatsapp' => '+255784363502',
-            'contact_email' => 'info@ndpcc.org',
+            'contact_email' => 'info@ndpccenter.co.tz',
             'service_times' => "Sunday: 9:00 AM & 11:00 AM\nWednesday: 6:00 PM\nFriday: 5:30 PM",
             'mpesa_number' => '+255 784 363 502',
             'mpesa_name' => 'NDPCC',
