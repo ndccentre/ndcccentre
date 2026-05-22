@@ -15,8 +15,8 @@ class ManageScripture extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $title = 'Scripture of the Week';
-    protected static ?string $navigationIcon = 'heroicon-o-book-open';
-    protected static ?string $navigationGroup = 'Settings';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-book-open';
+    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
     protected static string $view = 'filament.pages.manage-scripture';
 
     public ?array $data = [];
